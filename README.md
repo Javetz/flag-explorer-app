@@ -6,8 +6,12 @@ This is a flag explorer web application built with [Next.js](https://nextjs.org)
 2. Docker, this is used to build the applications image
 
 ## Getting Started
+If you are running the application for the first time you will need to install the node modules using:
+```
+npm install
+```
 
-First, run the development server:
+To run the aplication locally in a terminal run the following command:
 
 ```bash
 npm run dev

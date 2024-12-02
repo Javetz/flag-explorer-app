@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a flag explorer web application built with [Next.js](https://nextjs.org)
+
+## Local Environment Pre-requisites
+
+1. [Node.JS](https://nodejs.org/en) (v23 recommended via nvm) even though the project will run on node 18 and above.
+2. Docker, this is used to build the applications image
 
 ## Getting Started
 
@@ -7,30 +12,42 @@ First, run the development server:
 ```bash
 npm run dev
 # or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The entry point to the application is the `app/page.tsx` file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Unit tests
+The project uses jest for unit-testing, execute the following command to run tests ```npm run tests```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application is intended to run as a docker container.
+You will need to build and publish the docker image to your image repository.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+*Multi-stage docker builds*
+The project uses a multi-stage docker file, to reduce the size of the production image.
+There are 2 stages ```Builder stage``` and ```Runner Stage```.
 
-## Deploy on Vercel
+*Building the builder stage*
+```
+docker build --target builder -t nextjs-builder .
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+*Building the runner stage*
+```
+docker build --target runner -t nextjs-builder .
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Building all the stages*
+```
+docker build -t flag-explorer .
+```
+
+*Running the docker container*
+```
+docker run -it --rm -p 3000:3000 flag-explorer
+```
